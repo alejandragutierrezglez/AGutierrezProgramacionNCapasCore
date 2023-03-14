@@ -1,0 +1,96 @@
+﻿@model ML.Dependiente
+@{
+    ViewData["Title"] = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Form</h1>
+
+<h2>Formulario para agregar dependientes</h2>
+
+<div class="row">
+    <div class="col-12">
+        <h5>Ingrese los datos del nuevo dependiente:</h5>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("Form", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Nombre)
+            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", id = "txtNombre" , @placeholder = "Ejemp: Laura"})
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ApellidoPaterno)
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user" style="color:deeppink"></i></span>
+                @Html.TextBoxFor(model => model.ApellidoPaterno,  new { @class = "form-control", @id = "txtApellidoPaterno", @placeholder = "Ejemp: Ramirez" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.ApellidoMaterno)
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-users fa-flip"></i></span>
+                @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", @id = "txtApellidoMaterno", @placeholder = "Ejemp: Sanchez"})
+            </div>
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.FechaNacimiento)
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-regular fa-calendar-days fa-flip"></i></span>
+                @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control", @id = "txtFechaNacimiento" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.EstadoCivil)
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-envelope fa-flip"></i></span>
+                @Html.TextBoxFor(model => model.EstadoCivil, new { @class = "form-control", @id = "txtEstadoCivil", @placeholder = "Ejemp: Casado, Viudo, Soltero"})
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Genero)
+            :<br>
+            Masculino @Html.RadioButtonFor(Model => Model.Genero, "M")
+            <br>
+            Femenino @Html.RadioButtonFor(Model => Model.Genero, "F")
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Telefono)
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-phone fa-flip"></i></span>
+                @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control", @id = "txtTelefono", @placeholder = "Ejemp: 56378909" })
+            </div>
+            @Html.Label(null, "", new {@id = "lblTelefono"})
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.RFC)
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-address-card fa-flip"></i></span>
+                @Html.TextBoxFor(model => model.RFC, new { @class = "form-control", @id = "txtRFC" })
+            </div>
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.DependienteTipo)
+            @Html.DropDownListFor(model => model.DependienteTipo.IdDependienteTipo, new SelectList(Model.DependienteTipo.DependientesTipos, "IdDependienteTipo", "Nombre"), "Selecciona el id correspondiente", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" value="Guardar" class="btn btn-success" />
+                @Html.ActionLink("Regresar", "GetAll", "Dependiente", htmlAttributes: new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+}
+

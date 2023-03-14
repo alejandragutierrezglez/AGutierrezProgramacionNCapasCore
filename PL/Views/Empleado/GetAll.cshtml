@@ -1,0 +1,143 @@
+﻿@model ML.Empleado
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class=row>
+        <div class="text-center">
+            <h2>Bienvenidos</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h7>Seleccione la acción a realizar</h7>
+            <hr />
+        </div>
+    </div>
+</div>
+
+<div style="float:right;">
+    @Html.ActionLink("Agregar", "Form", "Empleado", htmlAttributes: new { @class = "btn btn-success" })
+</div>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+
+
+        @using (Html.BeginForm("GetAll", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Nombre)
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user" style="color:blue"></i></span>
+                        @Html.TextBoxFor(model => model.Nombre,  new { @class = "form-control", @id = "txtNombre"})
+                    </div>
+                    <div>
+                        <input type="submit" value="Buscar" class="btn btn-info" />
+                        @Html.ActionLink("Regresar a Lista", "GetAll", "Empleado", htmlAttributes: new { @class="btn btn-outline-info" })
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Empresa)
+                    @Html.DropDownListFor(model => model.Empresa.IdEmpresa, new SelectList(Model.Empresa.Empresas, "IdEmpresa", "Nombre"), "Selecciona la empresa", new { @class = "form-control" })
+                    <div>
+                        <input type="submit" value="Buscar" class="btn btn-info" />
+                        @Html.ActionLink("Regresar a Lista", "GetAll", "Empleado", htmlAttributes: new { @class="btn btn-outline-info" })
+                    </div>
+                </div>
+            </div>
+            <br />
+
+        }
+
+        <table class="table table-hover" id="tblUsuario">
+            <thead>
+                <tr class="table-secondary">
+                    <td>Aignar</td>
+                    <td>Editar</td>
+                    <td style="display :none;">Numero Empleado</td>
+                    <td>RFC</td>
+                    <td>Nombre</td>
+                    <td>Email</td>
+                    <td>Telefono</td>
+                    <td>Fecha Nacimiento</td>
+                    <td>NSS</td>
+                    <td>Fecha Ingreso</td>
+                    <td>Foto</td>
+                    <td>IdEmpresa</td>
+                    <td>Eliminar</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.Empleado empleado in Model.Empleados)
+                {
+
+                    <tr>
+                        <td style="text-align: center; vertical-align: middle;"><a class="btn btn-success glyphicon glyphicon-open" href="@Url.Action("Form", "DependienteEmpleado", new { NumeroEmpleado = empleado.NumeroEmpleado })"><i class="bi bi-person-plus" style="color:ivory"></i></a></td>
+                        <td style="text-align: center; vertical-align: middle;"><a class="btn btn-warning glyphicon glyphicon-pencil" href="@Url.Action("Form", "Empleado", new { NumeroEmpleado = empleado.NumeroEmpleado })"><i class="bi bi-pencil-square" style="color:ivory"></i></a></td>
+                        <td style="display :none;">@empleado.NumeroEmpleado </td>
+                        <td>@empleado.RFC</td>
+                        <td>@empleado.Nombre @empleado.ApellidoPaterno @empleado.ApellidoMaterno</td>
+                        @*<td>@usuario.ApellidoPaterno</td>
+                    <td>@usuario.ApellidoMaterno</td>*@
+                        <td>@empleado.Email</td>
+                        <td>@empleado.Telefono</td>
+                        <td>@empleado.FechaNacimiento</td>
+                        <td>@empleado.NSS</td>
+                        <td>@empleado.FechaIngreso</td>
+                        <td>
+
+                            @if (empleado.Foto != null)
+                            {
+
+                                <img id="Img" src="data:image/*;base64,@empleado.Foto" style="width:250px ; height:250px" />
+
+                            }
+                            else
+                            {
+                                <img id="Img" src="~/Imagenes/SinImagen.png" style="width:250px ; height:250px" />
+                            }
+
+                        </td>
+                        <td>@empleado.Empresa.IdEmpresa</td>
+
+
+
+                        <td style="text-align: center; vertical-align: middle;"><a class="btn btn-danger glyphicon glyphicon-remove" href="@Url.Action("Delete", "Empleado", new { NumeroEmpleado = empleado.NumeroEmpleado })" onclick="return confirm('¿Estas seguro que deseas eliminar este registro?');"><i class="bi bi-trash3-fill"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tblUsuario').DataTable({
+                searching: false,
+                "lengthMenu": [[3, 10, 15, 20, -1], [3, 10, 15, 20, "All"]],
+                autoWidth: false,
+                columnDefs: [
+                    {
+                        targets: ['_all'],
+                        className: 'mdc-data-table__cell',
+                    },
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+                },
+            });
+        });
+        </script>
+}
