@@ -81,7 +81,7 @@
                 {
 
                     <tr>
-                        <td style="text-align: center; vertical-align: middle;"><a class="btn btn-success glyphicon glyphicon-open" href="@Url.Action("Form", "DependienteEmpleado", new { NumeroEmpleado = empleado.NumeroEmpleado })"><i class="bi bi-person-plus" style="color:ivory"></i></a></td>
+                        <td style="text-align: center; vertical-align: middle;"><a class="btn btn-success glyphicon glyphicon-open" href="@Url.Action("GetAll", "DependienteEmpleado", new { NumeroEmpleado = empleado.NumeroEmpleado })"><i class="bi bi-person-plus" style="color:ivory"></i></a></td>
                         <td style="text-align: center; vertical-align: middle;"><a class="btn btn-warning glyphicon glyphicon-pencil" href="@Url.Action("Form", "Empleado", new { NumeroEmpleado = empleado.NumeroEmpleado })"><i class="bi bi-pencil-square" style="color:ivory"></i></a></td>
                         <td style="display :none;">@empleado.NumeroEmpleado </td>
                         <td>@empleado.RFC</td>

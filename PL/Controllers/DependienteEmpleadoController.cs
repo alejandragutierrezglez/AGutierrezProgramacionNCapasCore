@@ -6,65 +6,31 @@ namespace PL.Controllers
     {
         //GET: Usuario
 
-        //[HttpGet]
-        // public ActionResult GetAll()
-        // {
-        //     ML.Result result = BL.Empleado.GetAll();
-        //     ML.Empleado empleado = new ML.Empleado();
+        [HttpGet]
+        public ActionResult GetAll(string NumeroEmpleado)
 
-        //     if (result.Correct)
-        //     {
-
-        //         empleado.Empleados = result.Objects;
-        //         return View(empleado);
-        //     }
-        //     else
-        //     {
-        //         return View(empleado);
-        //     }
-        // }
-
-
-
-
-        [HttpPost] //Hacer el registro
-        public ActionResult Form(ML.Empleado empleado)
         {
-            IFormFile file = Request.Form.Files["fuImage"];
+            
+            ML.Result result = BL.DependienteEmpleado.DependienteGetByIdEmpleado(NumeroEmpleado);
+            ML.Dependiente dependiente = new ML.Dependiente();
+           // ML.Result resultDependiente = BL.Dependiente.GetAll();
 
-            if (file != null)
-            {
-                byte[] imagen = ConvertToBytes(file);
-
-                empleado.Foto = Convert.ToBase64String(imagen);
-            }
-
-            ML.Result result = new ML.Result();
-
-            if (empleado.NumeroEmpleado != null)
-            {
-                //Agregar
-                //result = BL.Empleado.Add(empleado);
-                //ViewBag.Message = "Se ha agregado el registro";
-                //Modificar
-                result = BL.Empleado.Update(empleado);
-                ViewBag.Message = "Se ha modificado el registro";
-            }
-            else
-            {
-                //Add
-                result = BL.Empleado.Update(empleado);
-                ViewBag.Message = "salio del if";
-            }
             if (result.Correct)
             {
-                return PartialView("Modal");
+
+                dependiente.Dependientes = result.Objects;
+                
+                return View(dependiente);
             }
             else
             {
-                return PartialView("Modal");
+                return View(dependiente);
             }
         }
+
+
+
+
         public static byte[] ConvertToBytes(IFormFile imagen)
         {
 

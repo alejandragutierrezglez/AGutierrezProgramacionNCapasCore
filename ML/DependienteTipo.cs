@@ -8,7 +8,7 @@ namespace ML
 {
     public class DependienteTipo
     {
-        public int IdDependienteTipo { get; set; }
+        public int? IdDependienteTipo { get; set; }
         public string Nombre { get; set; }
         public List<object> DependientesTipos { get; set; }
     }

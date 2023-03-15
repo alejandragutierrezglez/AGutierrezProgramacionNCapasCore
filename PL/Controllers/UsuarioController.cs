@@ -7,23 +7,89 @@ namespace PL.Controllers
     {
 
         // GET: Usuario
+
+        //Inyeccion de dependencias-- patron de diseño
+        private readonly IConfiguration _configuration;
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+
+        public UsuarioController(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
+        {
+            _configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
+        }
+        //exponer la logica de negocio a internet 
+        //HTTP 
+        //URL 
+        //[HttpGet]
+        //public ActionResult GetAll()
+        //{
+        //    ML.Usuario usuario = new ML.Usuario();
+        //    ML.Result result = BL.Usuario.GetAll(usuario);
+
+
+        //    if (result.Correct)
+        //    {
+        //        usuario.Usuarios = result.Objects;
+        //        return View(usuario);
+        //    }
+        //    else
+        //    {
+        //        return View(usuario);
+        //    }
+        //}
+
         [HttpGet]
         public ActionResult GetAll()
         {
+
             ML.Usuario usuario = new ML.Usuario();
-            ML.Result result = BL.Usuario.GetAll(usuario);
 
+            //alumno.Nombre = (alumno.Nombre == null) ? "" : alumno.Nombre;
+            //alumno.ApellidoPaterno = (alumno.ApellidoPaterno == null) ? "" : alumno.ApellidoPaterno;
+            //alumno.ApellidoMaterno = (alumno.ApellidoMaterno == null) ? "" : alumno.ApellidoMaterno;
+            //ML.Result result = BL.Alumno.GetAll(alumno);
 
-            if (result.Correct)
+            //alumno.Alumnos = result.Objects;
+            //return View(alumno);
+            ML.Result result = new ML.Result();
+            result.Objects = new List<object>();
+
+            try
             {
-                usuario.Usuarios = result.Objects;
-                return View(usuario);
+
+                using (var client = new HttpClient())
+                {
+                    string urlApi = _configuration["urlApi"];
+                    client.BaseAddress = new Uri(urlApi);
+
+                    var responseTask = client.GetAsync("Usuario/GetAll");
+                    responseTask.Wait();
+
+                    var resultServicio = responseTask.Result;
+
+                    if (resultServicio.IsSuccessStatusCode)
+                    {
+                        var readTask = resultServicio.Content.ReadAsAsync<ML.Result>();
+                        readTask.Wait();
+
+                        foreach (var resultItem in readTask.Result.Objects)
+                        {
+                            ML.Usuario resultItemList = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Usuario>(resultItem.ToString());
+                            result.Objects.Add(resultItemList);
+                        }
+                    }
+                    usuario.Usuarios = result.Objects;
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                return View(usuario);
             }
+
+            return View(usuario);
         }
+
+
         [HttpPost]
         public ActionResult GetAll(ML.Usuario usuario)
         {
