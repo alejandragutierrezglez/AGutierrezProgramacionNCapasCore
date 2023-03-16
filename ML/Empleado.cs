@@ -15,9 +15,9 @@ namespace ML
         public string? ApellidoMaterno { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }
-        public string? FechaNacimiento { get; set; }
+        public string FechaNacimiento { get; set; }
         public string? NSS { get; set; }
-        public string? FechaIngreso { get; set; }
+        public string FechaIngreso { get; set; }
         public string? Foto { get; set; }
         public string NombreCompleto { get; set; }
         public string Action { get; set; }

@@ -17,7 +17,12 @@ namespace PL.Controllers
             _configuration = configuration;
             _hostingEnvironment = hostingEnvironment;
         }
+
+        //AQUI SE CONSUMIA A TRAVES DE SWAGGER O POSTMAN // GETALL
+
         //exponer la logica de negocio a internet 
+
+
         //HTTP 
         //URL 
         //[HttpGet]
@@ -38,25 +43,28 @@ namespace PL.Controllers
         //    }
         //}
 
+
+        //[HttpGet]
+        //public ActionResult GetAll()
+        //{
+        //    ML.Usuario usuario = new ML.Usuario();
+        //    ML.Result result = BL.Usuario.GetAll(usuario);
+
+        //    usuario.Usuarios = result.Objects;
+
+
+        //}
+
         [HttpGet]
         public ActionResult GetAll()
         {
 
             ML.Usuario usuario = new ML.Usuario();
 
-            //alumno.Nombre = (alumno.Nombre == null) ? "" : alumno.Nombre;
-            //alumno.ApellidoPaterno = (alumno.ApellidoPaterno == null) ? "" : alumno.ApellidoPaterno;
-            //alumno.ApellidoMaterno = (alumno.ApellidoMaterno == null) ? "" : alumno.ApellidoMaterno;
-            //ML.Result result = BL.Alumno.GetAll(alumno);
-
-            //alumno.Alumnos = result.Objects;
-            //return View(alumno);
             ML.Result result = new ML.Result();
             result.Objects = new List<object>();
-
             try
             {
-
                 using (var client = new HttpClient())
                 {
                     string urlApi = _configuration["urlApi"];
@@ -87,7 +95,8 @@ namespace PL.Controllers
             }
 
             return View(usuario);
-        }
+        } //Visualizar los registros // AQUI SE HACE CONSUMO MEDIANTE CONTROLADOR DE GETALL
+
 
 
         [HttpPost]
@@ -111,10 +120,127 @@ namespace PL.Controllers
             }
         }
 
-        //para obtener nuevamente la vista
+
+        //AQUI SE CONSUMIA A TRAVES DE SWAGGER O POSTMAN      //para obtener nuevamente la vista con GetById
+        //[HttpGet]//para mostrar la vista
+        //public ActionResult Form(int? IdUsuario)
+        //{
+        //    ML.Result resultRol = BL.Rol.GetAll();
+        //    ML.Result resultPais = BL.Pais.GetAll();
+
+        //    ML.Usuario usuario = new ML.Usuario();
+
+        //    usuario.Rol = new ML.Rol();
+        //    usuario.Direccion = new ML.Direccion();
+        //    usuario.Direccion.Colonia = new ML.Colonia();
+        //    usuario.Direccion.Colonia.Municipio = new ML.Municipio();
+        //    usuario.Direccion.Colonia.Municipio.Estado = new ML.Estado();
+        //    usuario.Direccion.Colonia.Municipio.Estado.Pais = new ML.Pais();
+
+        //    if (resultRol.Correct && resultPais.Correct)
+        //    {
+
+        //        usuario.Rol.Roles = resultRol.Objects;
+        //        usuario.Direccion.Colonia.Municipio.Estado.Pais.Paises = resultPais.Objects;
+        //    }
+        //    if (IdUsuario == null)
+        //    {
+        //        //add //formulario vacio
+        //        return View(usuario);
+        //    }
+        //    else
+        //    {
+        //        //getById
+
+        //        ML.Result result = BL.Usuario.GetById(IdUsuario.Value); //2
+
+        //        if (result.Correct)
+        //        {
+        //            usuario = (ML.Usuario)result.Object;//unboxing
+        //            usuario.Rol.Roles = resultRol.Objects;
+        //            usuario.Direccion.Colonia.Municipio.Estado.Pais.Paises = resultPais.Objects;
+
+        //            ML.Result resultEstado = BL.Estado.GetByIdPais(usuario.Direccion.Colonia.Municipio.Estado.Pais.IdPais);
+        //            ML.Result resultMunicipio = BL.Municipio.GetByIdEstado(usuario.Direccion.Colonia.Municipio.Estado.IdEstado);
+        //            ML.Result resultColonia = BL.Colonia.GetByIdMunicipio(usuario.Direccion.Colonia.Municipio.IdMunicipio);
+
+        //            usuario.Direccion.Colonia.Municipio.Estado.Estados = resultEstado.Objects;
+        //            usuario.Direccion.Colonia.Municipio.Municipios = resultMunicipio.Objects;
+        //            usuario.Direccion.Colonia.Colonias = resultColonia.Objects;
+        //            //update
+        //            return View(usuario);
+        //        }
+        //        else
+        //        {
+        //            ViewBag.Message = "Ocurrio al consultar la información del alumno";
+        //            return View("Modal");
+        //        }
+        //    }
+        //}
+
+
+
+        //AQUI SE CONSUMIA A TRAVES DE SWAGGER O POSTMAN
+        //[HttpPost] //Hacer el registro
+        //public ActionResult Form(ML.Usuario usuario)
+        //{
+        //    IFormFile file = Request.Form.Files["fuImage"];
+
+        //    if (file != null)
+        //    {
+        //        byte[] imagen = ConvertToBytes(file);
+
+        //        usuario.Imagen = Convert.ToBase64String(imagen);
+        //    }
+
+
+        //    ML.Result result = new ML.Result();
+        //    //if (ModelState.IsValid == true)
+        //    //{
+
+        //    if (usuario.IdUsuario != null)
+        //    {
+        //        //Update
+        //        result = BL.Usuario.Update(usuario);
+        //        ViewBag.Message = "Se ha actualizado el registro";
+        //    }
+        //    else
+        //    {
+        //        //Add
+        //        result = BL.Usuario.Add(usuario);
+        //        ViewBag.Message = "Se ha agregado el registro";
+        //    }
+        //    if (result.Correct)
+        //    {
+        //        return PartialView("Modal");
+        //    }
+        //    else
+        //    {
+        //        return PartialView("Modal");
+        //    }
+        //    //}
+        //    //else {
+
+        //    //    usuario.Rol = new ML.Rol();
+        //    //    usuario.Direccion = new ML.Direccion();
+        //    //    usuario.Direccion.Colonia = new ML.Colonia();
+        //    //    usuario.Direccion.Colonia.Municipio = new ML.Municipio();
+        //    //    usuario.Direccion.Colonia.Municipio.Estado = new ML.Estado();
+        //    //    usuario.Direccion.Colonia.Municipio.Estado.Pais = new ML.Pais();
+
+        //    //    ML.Result resultRol = BL.Rol.GetAll();
+        //    //    ML.Result resultPais = BL.Pais.GetAll();
+
+        //    //    usuario.Rol.Roles = resultRol.Objects;
+        //    //    usuario.Direccion.Colonia.Municipio.Estado.Pais.Paises = resultPais.Objects;
+
+        //    //    return View(usuario);
+        //    //}
+        //}
+        //para obtener nuevamente la vista con GetById
 
         [HttpGet]//para mostrar la vista
-        public ActionResult Form(int? IdUsuario)
+        public ActionResult Form(int? IdUsuario) //AQUI SE HACE CONSUMO MEDIANTE CONTROLADOR DE GETBYID
         {
             ML.Result resultRol = BL.Rol.GetAll();
             ML.Result resultPais = BL.Pais.GetAll();
@@ -142,34 +268,67 @@ namespace PL.Controllers
             else
             {
                 //getById
+                //ML.Result result = BL.Usuario.GetById(IdUsuario.Value); //2
+                ML.Result result = new ML.Result();
 
-                ML.Result result = BL.Usuario.GetById(IdUsuario.Value); //2
+                using (var client = new HttpClient())
+                    try
+                    {
+                        client.BaseAddress = new Uri(_configuration["urlApi"]);
+                        var responseTask = client.GetAsync("Usuario/GetById/" + IdUsuario);
+                        responseTask.Wait();
 
-                if (result.Correct)
-                {
-                    usuario = (ML.Usuario)result.Object;//unboxing
-                    usuario.Rol.Roles = resultRol.Objects;
-                    usuario.Direccion.Colonia.Municipio.Estado.Pais.Paises = resultPais.Objects;
+                        var resultAPI = responseTask.Result;
+                        if (resultAPI.IsSuccessStatusCode)
 
-                    ML.Result resultEstado = BL.Estado.GetByIdPais(usuario.Direccion.Colonia.Municipio.Estado.Pais.IdPais);
-                    ML.Result resultMunicipio = BL.Municipio.GetByIdEstado(usuario.Direccion.Colonia.Municipio.Estado.IdEstado);
-                    ML.Result resultColonia = BL.Colonia.GetByIdMunicipio(usuario.Direccion.Colonia.Municipio.IdMunicipio);
+                        {
+                            var readTask = resultAPI.Content.ReadAsAsync<ML.Result>();
+                            readTask.Wait();
 
-                    usuario.Direccion.Colonia.Municipio.Estado.Estados = resultEstado.Objects;
-                    usuario.Direccion.Colonia.Municipio.Municipios = resultMunicipio.Objects;
-                    usuario.Direccion.Colonia.Colonias = resultColonia.Objects;
-                    //update
-                    return View(usuario);
-                }
-                else
-                {
-                    ViewBag.Message = "Ocurrio al consultar la información del alumno";
-                    return View("Modal");
-                }
+                            ML.Usuario resultItemList = new ML.Usuario();
+                            resultItemList = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Usuario>(readTask.Result.Object.ToString());
+                            result.Object = resultItemList;
+
+                            usuario.Direccion = new ML.Direccion();
+                            usuario.Direccion.Colonia = new ML.Colonia();
+                            usuario.Direccion.Colonia.Municipio = new ML.Municipio();
+                            usuario.Direccion.Colonia.Municipio.Estado = new ML.Estado();
+                            usuario.Direccion.Colonia.Municipio.Estado.Pais = new ML.Pais();
+
+
+                            usuario = (ML.Usuario)result.Object;//unboxing
+                            usuario.Rol.Roles = resultRol.Objects;
+                            usuario.Direccion.Colonia.Municipio.Estado.Pais.Paises = resultPais.Objects;
+
+                            ML.Result resultEstado = BL.Estado.GetByIdPais(usuario.Direccion.Colonia.Municipio.Estado.Pais.IdPais);
+                            ML.Result resultMunicipio = BL.Municipio.GetByIdEstado(usuario.Direccion.Colonia.Municipio.Estado.IdEstado);
+                            ML.Result resultColonia = BL.Colonia.GetByIdMunicipio(usuario.Direccion.Colonia.Municipio.IdMunicipio);
+
+                            usuario.Direccion.Colonia.Municipio.Estado.Estados = resultEstado.Objects;
+                            usuario.Direccion.Colonia.Municipio.Municipios = resultMunicipio.Objects;
+                            usuario.Direccion.Colonia.Colonias = resultColonia.Objects;
+                            //update
+                            return View(usuario);
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Ocurrio al consultar la información del alumno";
+                            return View("Modal");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        result.Correct = false;
+                        result.ErrorMessage = ex.Message;
+                    }
+                return View(usuario);
+
             }
         }
 
-        [HttpPost] //Hacer el registro
+
+
+        [HttpPost] //Hacer el registro //AQUI SE HACE CONSUMO MEDIANTE CONTROLADOR DE ADD Y UPDATE
         public ActionResult Form(ML.Usuario usuario)
         {
             IFormFile file = Request.Form.Files["fuImage"];
@@ -181,31 +340,86 @@ namespace PL.Controllers
                 usuario.Imagen = Convert.ToBase64String(imagen);
             }
 
+            if (usuario.IdUsuario != null)
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_configuration["urlApi"]);
 
-            ML.Result result = new ML.Result();
+                    //HTTP POST
+                    var postTask = client.PostAsJsonAsync<ML.Usuario>("Usuario/Update/"+usuario.IdUsuario, usuario);
+                    postTask.Wait();
+
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        ViewBag.Message = "Se ha modificado el registro";
+                        return PartialView("Modal");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "No se ha modificado el registro";
+                        return PartialView("Modal");
+                    }
+                }
+
+                //return View("GetAll");
+
+            }
+            else
+            {
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_configuration["urlApi"]);
+
+                    //HTTP POST
+                    var postTask = client.PostAsJsonAsync<ML.Usuario>("Usuario/Add", usuario);
+                    postTask.Wait();
+
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        ViewBag.Message = "Se ha agregado el registro";
+                        return PartialView("Modal");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "No se ha agregado el registro";
+                        return PartialView("Modal");
+                    }
+                }
+            }
+
+
+
+            //return View("GetAll");
+
+
+            //ML.Result result = new ML.Result();
             //if (ModelState.IsValid == true)
             //{
 
-            if (usuario.IdUsuario != null)
-            {
-                //Update
-                result = BL.Usuario.Update(usuario);
-                ViewBag.Message = "Se ha actualizado el registro";
-            }
-            else
-            {
-                //Add
-                result = BL.Usuario.Add(usuario);
-                ViewBag.Message = "Se ha agregado el registro";
-            }
-            if (result.Correct)
-            {
-                return PartialView("Modal");
-            }
-            else
-            {
-                return PartialView("Modal");
-            }
+            //if (usuario.IdUsuario != null)
+            //{
+            //    //Update
+            //    result = BL.Usuario.Update(usuario);
+            //    ViewBag.Message = "Se ha actualizado el registro";
+            //}
+            //else
+            //{
+            //    //Add
+            //    result = BL.Usuario.Add(usuario);
+            //    ViewBag.Message = "Se ha agregado el registro";
+            //}
+            //if (result.Correct)
+            //{
+            //    return PartialView("Modal");
+            //}
+            //else
+            //{
+            //    return PartialView("Modal");
+            //}
             //}
             //else {
 
@@ -225,20 +439,49 @@ namespace PL.Controllers
             //    return View(usuario);
             //}
         }
-        public ActionResult Delete(int IdUsuario)
-        {
-            ML.Result result = BL.Usuario.Delete(IdUsuario);
 
-            if (result.Correct)
+
+
+        //AQUI SE CONSUMIA A TRAVES DE SWAGGER O POSTMAN
+        //public ActionResult Delete(int IdUsuario)
+        //{
+        //    ML.Result result = BL.Usuario.Delete(IdUsuario);
+
+        //    if (result.Correct)
+        //    {
+        //        ViewBag.Message = "Se ha eliminado el registro";
+        //        return PartialView("Modal");
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Message = "No se ha podido registrar el usuario" + result.ErrorMessage;
+        //        return PartialView("Modal");
+        //    }
+        //}
+
+        public ActionResult Delete(int IdUsuario) //Eliminar //Aqui se hace consumo mediante controlador
+        {
+            ML.Result resultListUsuarios = new ML.Result();
+            ML.Usuario usuario = new ML.Usuario();
+            usuario.IdUsuario = IdUsuario;
+
+            using (var client = new HttpClient())
             {
-                ViewBag.Message = "Se ha eliminado el registro";
-                return PartialView("Modal");
+                client.BaseAddress = new Uri(_configuration["urlApi"]);
+
+                var postTask = client.GetAsync("Usuario/Delete/" + IdUsuario);
+                postTask.Wait();
+
+                var result = postTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    resultListUsuarios = BL.Usuario.GetAll(usuario);
+                    ViewBag.Message = "Se ha eliminado el registro";
+                    return PartialView("Modal");
+                }
             }
-            else
-            {
-                ViewBag.Message = "No se ha podido registrar el usuario" + result.ErrorMessage;
-                return PartialView("Modal");
-            }
+            resultListUsuarios = BL.Usuario.GetAll(usuario);
+            return View("GetAll", resultListUsuarios);
         }
 
         [HttpPost]

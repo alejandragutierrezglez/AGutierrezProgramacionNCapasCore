@@ -1,35 +1,103 @@
 ﻿using BL;
+using DL;
 using Microsoft.AspNetCore.Mvc;
+using ML;
 
 namespace PL.Controllers
 {
     public class EmpleadoController : Controller
     {
         // GET: Empleado
-        [HttpGet]
+        private readonly IConfiguration _configuration;
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
 
+        public EmpleadoController(IConfiguration configuration, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
+        {
+            _configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
+        }
+        //AQUI SE CONSUMIA CON SWAGGER Y POSTMAN
+        //[HttpGet]
+        //public ActionResult GetAll()
+        //{
+        //    ML.Empleado empleado = new ML.Empleado();
+
+        //    ML.Result resultEmpleado = BL.Empleado.GetAll(empleado);
+        //    ML.Result resultEmpresa = BL.Empresa.GetAll();
+
+        //    empleado.Empresa = new ML.Empresa();
+
+        //    if (resultEmpleado.Correct && resultEmpresa.Correct)
+        //    {
+        //        empleado.Empleados = resultEmpleado.Objects;
+        //        empleado.Empresa.Empresas = resultEmpresa.Objects;
+        //        return View(empleado);
+        //    }
+        //    else
+        //    {
+        //        return View(empleado);
+        //    }
+        //}
+
+
+        [HttpGet] //AQUI SE CONSUME EN CONTROLADOR
         public ActionResult GetAll()
         {
             ML.Empleado empleado = new ML.Empleado();
-
-            ML.Result resultEmpleado = BL.Empleado.GetAll(empleado);
-            ML.Result resultEmpresa = BL.Empresa.GetAll();
-
             empleado.Empresa = new ML.Empresa();
 
+            ML.Result result = new ML.Result();
+            result.Objects = new List<object>();
+
+            ML.Result resultEmpresa = new ML.Result();
+            resultEmpresa.Objects = new List<object>();
+            //empleado.Empresa.Empresas = resultEmpresa.Objects;
 
 
-            if (resultEmpleado.Correct && resultEmpresa.Correct)
+            try
             {
-                empleado.Empleados = resultEmpleado.Objects;
-                empleado.Empresa.Empresas = resultEmpresa.Objects;
-                return View(empleado);
+                using (var client = new HttpClient())
+                {
+                    string urlApi = _configuration["urlApi"];
+                    client.BaseAddress = new Uri(urlApi);
+
+                    var responseTask = client.GetAsync("Empleado/GetAll");
+                    responseTask.Wait();
+
+                    var resultServicio = responseTask.Result;
+
+
+                    if (resultServicio.IsSuccessStatusCode)
+                    {
+                        var readTask = resultServicio.Content.ReadAsAsync<ML.Result>();
+                        readTask.Wait();
+
+                        foreach (var resultItem in readTask.Result.Objects)
+                        {
+                            ML.Empleado resultItemList = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Empleado>(resultItem.ToString());
+                            result.Objects.Add(resultItemList);
+                        }
+                        //foreach (var resultItemEmp in readTask.Result.Objects)
+                        //{
+                        //ML.Empresa resultItemListEmpresa = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Empresa>(resultItemEmp.ToString());
+                        //resultEmpresa.Objects.Add(resultItemListEmpresa);
+                        //}
+                    }
+                    empleado.Empleados = result.Objects;
+                    empleado.Empresa.Empresas = resultEmpresa.Objects;
+
+
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                return View(empleado);
             }
+
+            return View(empleado);
+
         }
+
 
         [HttpPost]
         public ActionResult GetAll(ML.Empleado empleado)
@@ -96,6 +164,9 @@ namespace PL.Controllers
 
         }
 
+
+
+        //AQUI SE CONSUMIA CON SWAGGER Y POSTMAN
         [HttpPost] //Hacer el registro
         public ActionResult Form(ML.Empleado empleado)
         {
@@ -114,16 +185,18 @@ namespace PL.Controllers
             if (empleado.NumeroEmpleado != null)
             {
                 //Agregar
-                //result = BL.Empleado.Add(empleado);
-                //ViewBag.Message = "Se ha agregado el registro";
+                result = BL.Empleado.Add(empleado);
+                ViewBag.Message = "Se ha agregado el registro";
                 //Modificar
-                result = BL.Empleado.Update(empleado);
-                ViewBag.Message = "Se ha modificado el registro";
+                //result = BL.Empleado.Update(empleado);
+                //ViewBag.Message = "Se ha modificado el registro";
             }
             else
             {
                 //Add
-                result = BL.Empleado.Update(empleado);
+                //
+                //result = BL.Empleado.Update(empleado);
+                result = BL.Empleado.Add(empleado);
                 ViewBag.Message = "salio del if";
             }
             if (result.Correct)
@@ -135,6 +208,10 @@ namespace PL.Controllers
                 return PartialView("Modal");
             }
         }
+
+
+
+
 
         public ActionResult Delete(string numeroEmpleado)
         {

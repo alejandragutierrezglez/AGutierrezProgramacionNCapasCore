@@ -7,8 +7,14 @@ namespace SL.Controllers
 
         [HttpGet]
         [Route("api/Usuario/GetAll")]
-        public ActionResult GetAll(ML.Usuario usuario)
+        public ActionResult GetAll()
         {
+            ML.Usuario usuario = new ML.Usuario();
+
+            usuario.Nombre = (usuario.Nombre == null) ? "" : usuario.Nombre;
+            usuario.ApellidoPaterno = (usuario.ApellidoPaterno == null) ? "" : usuario.ApellidoPaterno;
+            usuario.ApellidoMaterno = (usuario.ApellidoMaterno == null) ? "" : usuario.ApellidoMaterno;
+
             ML.Result result = BL.Usuario.GetAll(usuario);
             if (result.Correct)
             {

@@ -6,10 +6,18 @@ namespace SL.Controllers
     {
         [HttpGet]
         [Route("api/Empleado/GetAll")]
-        public ActionResult GetAll(ML.Empleado empleado)
+        public ActionResult GetAll()
         {
+            ML.Empleado empleado = new ML.Empleado();
+            empleado.Nombre = (empleado.Nombre == null) ? "" : empleado.Nombre;
+            
             ML.Result result = BL.Empleado.GetAll(empleado);
-            if (result.Correct)
+            ML.Result resultEmpresa = BL.Empresa.GetAll();
+           
+            empleado.Empresa = new ML.Empresa();
+            empleado.Empresa.Empresas = resultEmpresa.Objects;
+
+            if (result.Correct && resultEmpresa.Correct)
             {
                 return Ok(result);
             }

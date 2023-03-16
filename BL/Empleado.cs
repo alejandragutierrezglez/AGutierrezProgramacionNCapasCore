@@ -39,9 +39,9 @@ namespace BL
                             empleado.ApellidoMaterno = obj.ApellidoMaterno;
                             empleado.Email= obj.Email;
                             empleado.Telefono = obj.Telefono;
-                            empleado.FechaNacimiento = obj.FechaNacimiento.Value.ToString("dd/MM/yyyy");
+                            empleado.FechaNacimiento = obj.FechaNacimiento.ToString("dd/MM/yyyy");
                             empleado.NSS = obj.Nss;
-                            empleado.FechaIngreso = obj.FechaIngreso.Value.ToString("dd/MM/yyyy");
+                            empleado.FechaIngreso = obj.FechaIngreso.ToString("dd/MM/yyyy");
                             empleado.Foto = obj.Foto;
                           
                             empleado.Empresa = new ML.Empresa();
@@ -76,7 +76,7 @@ namespace BL
                 using (DL.AgutierrezProgramacionNcapasContext context = new DL.AgutierrezProgramacionNcapasContext())
                 {
                     // var query = context.UsuarioAdd(usuario.Nombre, usuario.ApellidoPaterno, usuario.ApellidoMaterno, usuario.Email, usuario.UserName, usuario.Passwordd, DateTime.Parse(usuario.FechaNacimiento), usuario.Rol.IdRol, usuario.Sexo, usuario.Telefono, usuario.Celular, usuario.CURP, usuario.Imagen, usuario.Direccion.Calle, usuario.Direccion.NumeroInterior, usuario.Direccion.NumeroExterior, usuario.Direccion.Colonia.IdColonia);
-                    int query = context.Database.ExecuteSqlRaw($"EmpleadoAdd '{empleado.NumeroEmpleado}', '{empleado.RFC}', '{empleado.Nombre}','{empleado.ApellidoPaterno}','{empleado.ApellidoMaterno}','{empleado.Email}','{empleado.Telefono}','{empleado.FechaNacimiento}','{empleado.NSS}','{empleado.FechaIngreso}','{empleado.Foto}',{empleado.Empresa.IdEmpresa}");
+                    var query = context.Database.ExecuteSqlRaw($"EmpleadoAdd '{empleado.NumeroEmpleado}', '{empleado.RFC}', '{empleado.Nombre}','{empleado.ApellidoPaterno}','{empleado.ApellidoMaterno}','{empleado.Email}','{empleado.Telefono}','{empleado.FechaNacimiento}','{empleado.NSS}','{empleado.FechaIngreso}','{empleado.Foto}',{empleado.Empresa.IdEmpresa}");
 
                     if (query >= 1)
                     {
@@ -154,9 +154,9 @@ namespace BL
                             empleado.ApellidoMaterno= query.ApellidoMaterno;
                             empleado.Email = query.Email;
                             empleado.Telefono= query.Telefono;
-                            empleado.FechaNacimiento = query.FechaNacimiento.Value.ToString("dd/MM/yyyy");
+                            empleado.FechaNacimiento = query.FechaNacimiento.ToString("dd/MM/yyyy");
                             empleado.NSS = query.Nss;
-                            empleado.FechaIngreso = query.FechaIngreso.Value.ToString("dd/MM/yyyy");
+                            empleado.FechaIngreso = query.FechaIngreso.ToString("dd/MM/yyyy");
                             empleado.Foto = query.Foto;
                             empleado.Empresa = new ML.Empresa();
                             empleado.Empresa.IdEmpresa = query.IdEmpresa.Value;

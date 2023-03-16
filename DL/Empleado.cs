@@ -19,11 +19,11 @@ public partial class Empleado
 
     public string Telefono { get; set; } = null!;
 
-    public DateTime? FechaNacimiento { get; set; }
+    public DateTime FechaNacimiento { get; set; }
 
     public string? Nss { get; set; }
 
-    public DateTime? FechaIngreso { get; set; }
+    public DateTime FechaIngreso { get; set; }
 
     public string? Foto { get; set; }
 
